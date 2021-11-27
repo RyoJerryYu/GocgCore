@@ -18,14 +18,14 @@ struct effect_relation_hash {
 */
 
 type (
-	CardVector      []*Card
-	EffectContainer map[uint32][]Effect // symulate multimap
-	CardSet         map[*Card]struct{}  // TODO: symulate set, ignoring comparator
-	EffectIndexer   map[Effect]uint     // TODO: iterator
-	EffectRelation  map[uint16]Effect   // TODO: comparator
-	RelationMap     map[*Card]uint32
-	CounterMap      map[uint16][2]uint16
-	EffectCount     map[uint32]int32
+	cardVector      []*Card
+	effectContainer map[uint32][]Effect // symulate multimap
+	cardSet         map[*Card]struct{}  // TODO: symulate set, ignoring comparator
+	effectIndexer   map[Effect]uint     // TODO: iterator
+	effectRelation  map[uint16]Effect   // TODO: comparator
+	relationMap     map[*Card]uint32
+	counterMap      map[uint16][2]uint16
+	effectCount     map[uint32]int32
 )
 
 // TODO: symulate map of pair
@@ -42,7 +42,7 @@ func (am *AttackerMap) FindCard(card *Card) uint32 {
 	return 0
 }
 
-type SendToParamT struct {
+type sendToParamT struct {
 	PlayerId uint8
 	Position uint8
 	Location uint8
@@ -50,14 +50,14 @@ type SendToParamT struct {
 }
 
 // TODO: ignore default seq
-func (stp *SendToParamT) Set(p uint8, pos uint8, loc uint8, seq uint8) {
+func (stp *sendToParamT) Set(p uint8, pos uint8, loc uint8, seq uint8) {
 	stp.PlayerId = p
 	stp.Position = pos
 	stp.Location = loc
 	stp.Sequence = seq
 }
 
-func (stp *SendToParamT) Clear() {
+func (stp *sendToParamT) Clear() {
 	stp.PlayerId = 0
 	stp.Position = 0
 	stp.Location = 0
@@ -76,7 +76,7 @@ type Card struct {
 	SummonPlayer          uint8
 	SummonInfo            uint32
 	Status                uint32
-	SendToParam           SendToParamT
+	SendToParam           sendToParamT
 	ReleaseParam          uint32
 	SumParam              uint32
 	PositionParam         uint32
@@ -105,23 +105,23 @@ type Card struct {
 	EquipingTarget        *Card
 	PreEquipTarget        *Card
 	OverlayTarget         *Card
-	Relations             RelationMap
-	Counters              CounterMap
-	IndestructableEffects EffectCount
+	Relations             relationMap
+	Counters              counterMap
+	IndestructableEffects effectCount
 	AnnouncedCards        AttackerMap
 	AttackedCards         AttackerMap
 	BattledCards          AttackerMap
-	EquipingCards         CardSet
-	MaterialCards         CardSet
-	EffectTargetOwner     CardSet
-	EffectTargetCards     CardSet
-	XyzMaterials          CardVector
-	SingleEffect          EffectContainer
-	FieldEffect           EffectContainer
-	EquipEffect           EffectContainer
-	TargetEffect          EffectContainer
-	XMaterialEffect       EffectContainer
-	Indexer               EffectIndexer
-	RelateEffect          EffectRelation
+	EquipingCards         cardSet
+	MaterialCards         cardSet
+	EffectTargetOwner     cardSet
+	EffectTargetCards     cardSet
+	XyzMaterials          cardVector
+	SingleEffect          effectContainer
+	FieldEffect           effectContainer
+	EquipEffect           effectContainer
+	TargetEffect          effectContainer
+	XMaterialEffect       effectContainer
+	Indexer               effectIndexer
+	RelateEffect          effectRelation
 	ImmuneEffect          effectset.EffectSet // TODO: EffectSetV
 }
