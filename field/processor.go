@@ -3,24 +3,26 @@ package field
 import (
 	"github.com/RyoJerryYu/GocgCore/card"
 	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/effectset"
+	"github.com/RyoJerryYu/GocgCore/group"
 )
 
 type (
-	effectVector []*Effect
+	effectVector []*effect.Effect
 	// TODO: check redeclear and in-class type define
 	// cardVector   []*card.Card
 	optionVector []uint32
 	// cardList      []*card.Card //  unused
 	eventList     []*TEvent // TODO: use list
 	chainList     []*Chain
-	instantFList  map[*Effect]Chain
+	instantFList  map[*effect.Effect]Chain
 	chainArray    []Chain
 	processorList []*ProcessorUnit
 	cardSet       map[*card.Card]struct{}
 
 	delayedEffectCollection map[struct {
-		*Effect
+		*effect.Effect
 		TEvent
 	}]struct{}
 	chainLimitT struct {
@@ -102,7 +104,7 @@ type Processor struct {
 	DisfieldEffects        effectset.EffectSet // TODO: use effect set v
 	ExtraMzoneEffects      effectset.EffectSet
 	ExtraSzoneEffects      effectset.EffectSet
-	ResetedEffects         map[*Effect]struct{}
+	ResetedEffects         map[*effect.Effect]struct{}
 	ReadjustMap            map[*card.Card]uint32
 	UniqueCards            [2]map[*card.Card]struct{}
 	EffectCountCode        map[uint32]uint32
@@ -121,7 +123,7 @@ type Processor struct {
 	WinPlayer                  uint8
 	WinReason                  uint8
 	ReAdjust                   uint8
-	ReasonEffect               *Effect
+	ReasonEffect               *effect.Effect
 	ReasonPlayer               uint8
 	SummoningCard              *card.Card
 	SummonDepth                uint8
@@ -131,13 +133,13 @@ type Processor struct {
 	LimitExtraSummonZone       uint32
 	LimitExtraSummonReleasable uint32
 	LimitTuner                 *card.Card
-	LimitSyn                   *Group
+	LimitSyn                   *group.Group
 	LimitSynMinc               int32
 	LimitSynMaxc               int32
-	LimitXyz                   *Group
+	LimitXyz                   *group.Group
 	LimitXyzMinc               int32
 	LimitXyzMaxc               int32
-	LimitLink                  *Group
+	LimitLink                  *group.Group
 	LimitLinkCard              *card.Card
 	LimitLinkMinc              int32
 	LimitLinkMaxc              int32
