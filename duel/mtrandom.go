@@ -33,7 +33,7 @@ type Randomer struct {
 
 func (r Randomer) GetRandomInteger(lo, hi int) int {
 	rng := uint32(hi - lo + 1) // range
-	secureMax := uint32(r.GetRandMax() - r.GetRandMax()%rng)
+	secureMax := r.GetRandMax() - r.GetRandMax()%rng
 	x := r.Rand()
 	for x >= secureMax {
 		x = r.Rand()
@@ -68,7 +68,7 @@ func (r Randomer) ShuffleVectorOld(v []interface{}) {
 }
 
 func NewRandomer() *Randomer {
-	rand.Seed(int64(time.Now().UnixNano()))
+	rand.Seed(time.Now().UnixNano())
 	return &Randomer{buildInU32RandomMachine{}}
 }
 

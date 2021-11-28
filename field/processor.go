@@ -30,8 +30,8 @@ type (
 	}
 	chainLimitList []chainLimitT
 	pairUint32     struct {
-		first  uint32
-		second uint32
+		First  uint32
+		Second uint32
 	}
 )
 
