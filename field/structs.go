@@ -3,14 +3,14 @@ package field
 import (
 	"github.com/RyoJerryYu/GocgCore/card"
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/group"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type TEvent struct {
-	TriggerCard  *card.Card
+	TriggerCard  interfaces.Card
 	EventCards   *group.Group
-	ReasonEffect *effect.Effect
+	ReasonEffect interfaces.Effect
 	EventCode    uint32
 	EventValue   uint32
 	Reason       uint32
@@ -64,12 +64,12 @@ type Chain struct {
 	TriggeringSequence  uint8
 	TriggeringPosition  uint8
 	TriggeringState     card.CardState
-	TriggeringEffect    *effect.Effect
+	TriggeringEffect    interfaces.Effect
 	TargetCards         *group.Group
 	ReplaceOp           int32
 	TargetPlayer        uint8
 	TargetParam         int32
-	DisableReason       *effect.Effect
+	DisableReason       interfaces.Effect
 	DisablePlayer       uint8
 	Evt                 TEvent
 	OpInfos             opMap
@@ -98,7 +98,7 @@ func NewChain() *Chain {
 	}
 }
 
-type cardVector []*card.Card
+type cardVector []interfaces.Card
 
 type PlayerInfo struct {
 	Lp               int32
@@ -133,12 +133,12 @@ func NewPlayerInfo() *PlayerInfo {
 }
 
 type (
-	effectContainer      map[uint32][]*effect.Effect // multimap
-	effectIndexer        map[*effect.Effect]uint32   // TODO: How to sync iterator?
-	oathEffects          map[*effect.Effect]*effect.Effect
-	effectCollection     map[*effect.Effect]struct{}
-	gainEffects          map[*card.Card]*effect.Effect
-	grantEffectContainer map[*effect.Effect]gainEffects
+	effectContainer      map[uint32][]interfaces.Effect // multimap
+	effectIndexer        map[interfaces.Effect]uint32   // TODO: How to sync iterator?
+	oathEffects          map[interfaces.Effect]interfaces.Effect
+	effectCollection     map[interfaces.Effect]struct{}
+	gainEffects          map[interfaces.Card]interfaces.Effect
+	grantEffectContainer map[interfaces.Effect]gainEffects
 )
 
 type FieldEffect struct {
@@ -157,8 +157,8 @@ type FieldEffect struct {
 	Rechargeable     effectCollection
 	SpSummonCountEff effectCollection
 
-	DisableCheckList []*card.Card
-	DisableCheckSet  map[*card.Card]struct{}
+	DisableCheckList []interfaces.Card
+	DisableCheckSet  map[interfaces.Card]struct{}
 
 	GrantEffect grantEffectContainer
 }
@@ -192,7 +192,7 @@ type LpCost struct {
 type ProcessorUnit struct {
 	Type    uint16
 	Step    uint16
-	PEffect *effect.Effect
+	PEffect interfaces.Effect
 	PTarget *group.Group
 	Arg1    common.Ptr
 	Arg2    common.Ptr
