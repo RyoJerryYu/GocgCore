@@ -127,11 +127,11 @@ type Card struct {
 	ImmuneEffect          effectset.EffectSet // TODO: EffectSetV
 }
 
-func cardSort(p1, p2 interface{}) bool {
-	c1 := p1.(*Card)
-	c2 := p2.(*Card)
-	return c1.CardId < c2.CardId
-}
+// func cardSort(p1, p2 interface{}) bool {
+// 	c1 := p1.(*Card)
+// 	c2 := p2.(*Card)
+// 	return c1.CardId < c2.CardId
+// }
 
 func (c *Card) CardOperationSort(c1, c2 *Card) bool {
 	// pDuel := c.PDuel
