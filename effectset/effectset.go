@@ -1,25 +1,24 @@
 package effectset
 
-type Effect struct {
-}
+import "github.com/RyoJerryYu/GocgCore/effect"
 
 // TODO: Should not be a type but an actual function
 // Maybe could be an method of Effect
-type EffectSortId func(Effect, Effect) bool
+type EffectSortId func(*effect.Effect, *effect.Effect) bool
 
 type EffectSet struct {
 	count     int
-	container [64]*Effect
+	container [64]*effect.Effect
 }
 
 func NewEffectSet() *EffectSet {
 	return &EffectSet{
 		count:     0,
-		container: [64]*Effect{nil},
+		container: [64]*effect.Effect{nil},
 	}
 }
 
-func (es *EffectSet) AddItem(item *Effect) {
+func (es *EffectSet) AddItem(item *effect.Effect) {
 	if es.count >= len(es.container) {
 		return
 	}
@@ -73,11 +72,11 @@ In origin, there are two functions.
 Here we egnore the difference and just define one.
 Same as operator[](int)Effect and at(int)Effect.
 */
-func (es *EffectSet) GetLast() *Effect {
+func (es *EffectSet) GetLast() *effect.Effect {
 	return es.container[es.count-1]
 }
 
-func (es *EffectSet) At(index int) *Effect {
+func (es *EffectSet) At(index int) *effect.Effect {
 	return es.container[index]
 }
 
