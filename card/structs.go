@@ -1,12 +1,9 @@
 package card
 
-import "github.com/RyoJerryYu/GocgCore/common"
-
-type (
-	Duel   interface{}
-	Effect interface{}
-	Group  interface{}
-	Chain  interface{}
+import (
+	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/effect"
+	"github.com/RyoJerryYu/GocgCore/group"
 )
 
 type CardData struct {
@@ -52,7 +49,7 @@ type CardState struct {
 	PZone        bool
 	ReasonCard   *Card
 	ReasonPlayer uint8
-	ReasonEffect Effect
+	ReasonEffect *effect.Effect
 }
 
 func NewCardState() *CardState {
@@ -125,15 +122,15 @@ type QueryCache struct {
 type MaterialInfo struct {
 	// Synchron
 	LimitTuner   *Card
-	LimitSyn     Group
+	LimitSyn     *group.Group
 	LimitSynMinc int32
 	LimitSynMaxc int32
 	// Xyz
-	LimitXyz     Group
+	LimitXyz     *group.Group
 	LimitXyzMinc int32
 	LimitXyzMaxc int32
 	// Link
-	LimitLink     Group
+	LimitLink     *group.Group
 	LimitLinkCard *Card
 	LimitLinkMinc int32
 	LimitLinkMaxc int32

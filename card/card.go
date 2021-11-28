@@ -2,6 +2,8 @@ package card
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/duel"
+	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/effectset"
 )
 
@@ -19,10 +21,10 @@ struct effect_relation_hash {
 
 type (
 	cardVector      []*Card
-	effectContainer map[uint32][]Effect // symulate multimap
-	cardSet         map[*Card]struct{}  // TODO: symulate set, ignoring comparator
-	effectIndexer   map[Effect]uint     // TODO: iterator
-	effectRelation  map[uint16]Effect   // TODO: comparator
+	effectContainer map[uint32][]*effect.Effect // symulate multimap
+	cardSet         map[*Card]struct{}          // TODO: symulate set, ignoring comparator
+	effectIndexer   map[*effect.Effect]uint     // TODO: iterator
+	effectRelation  map[uint16]*effect.Effect   // TODO: comparator
 	relationMap     map[*Card]uint32
 	counterMap      map[uint16][2]uint16
 	effectCount     map[uint32]int32
@@ -66,7 +68,7 @@ func (stp *sendToParamT) Clear() {
 
 type Card struct {
 	RefHandle             int32
-	PDuel                 Duel
+	PDuel                 *duel.Duel
 	Data                  CardData
 	Previous              CardState
 	Temp                  CardState
@@ -97,7 +99,7 @@ type Card struct {
 	UniqueCode            uint32
 	UniqueLocation        uint32
 	UniqueFunction        uint32
-	UniqueEffect          Effect
+	UniqueEffect          *effect.Effect
 	SPSummonCode          uint32
 	SPSummonCounter       [2]uint16
 	AssumeType            uint8
@@ -124,4 +126,36 @@ type Card struct {
 	Indexer               effectIndexer
 	RelateEffect          effectRelation
 	ImmuneEffect          effectset.EffectSet // TODO: EffectSetV
+}
+
+func cardSort(p1, p2 interface{}) bool {
+	c1 := p1.(*Card)
+	c2 := p2.(*Card)
+	return c1.CardId < c2.CardId
+}
+
+func (c *Card) CardOperationSort(c1, c2 *Card) bool {
+	// pDuel := c.PDuel
+	var (
+		cp1 uint8 // TODO: why int32 here?
+		cp2 uint8
+	)
+	if c1.OverlayTarget != nil {
+		cp1 = c1.OverlayTarget.Current.Controler // Controler Is a Peaple?
+	} else {
+		cp1 = c1.Current.Controler
+	}
+	if c2.OverlayTarget != nil {
+		cp2 = c2.OverlayTarget.Current.Controler
+	} else {
+		cp2 = c2.Current.Controler
+	}
+
+	if cp1 == cp2 {
+		if cp1 == common.PLAYER_NONE || cp2 == common.PLAYER_NONE {
+			return cp1 < cp2
+		}
+		// TODO: Finish This After Duel Defined
+	}
+	return false
 }

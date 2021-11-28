@@ -3,18 +3,14 @@ package field
 import (
 	"github.com/RyoJerryYu/GocgCore/card"
 	"github.com/RyoJerryYu/GocgCore/common"
-)
-
-type (
-	Duel   struct{}
-	Group  struct{}
-	Effect struct{}
+	"github.com/RyoJerryYu/GocgCore/effect"
+	"github.com/RyoJerryYu/GocgCore/group"
 )
 
 type TEvent struct {
 	TriggerCard  *card.Card
-	EventCards   *Group
-	ReasonEffect *Effect
+	EventCards   *group.Group
+	ReasonEffect *effect.Effect
 	EventCode    uint32
 	EventValue   uint32
 	Reason       uint32
@@ -41,7 +37,7 @@ func (te *TEvent) LessThan(v *TEvent) bool {
 }
 
 type OpTarget struct {
-	OpCards  *Group
+	OpCards  *group.Group
 	OpCount  uint8
 	OpPlayer uint8
 	OpParam  uint32
@@ -68,12 +64,12 @@ type Chain struct {
 	TriggeringSequence  uint8
 	TriggeringPosition  uint8
 	TriggeringState     card.CardState
-	TriggeringEffect    *Effect
-	TargetCards         *Group
+	TriggeringEffect    *effect.Effect
+	TargetCards         *group.Group
 	ReplaceOp           int32
 	TargetPlayer        uint8
 	TargetParam         int32
-	DisableReason       *Effect
+	DisableReason       *effect.Effect
 	DisablePlayer       uint8
 	Evt                 TEvent
 	OpInfos             opMap
@@ -137,12 +133,12 @@ func NewPlayerInfo() *PlayerInfo {
 }
 
 type (
-	effectContainer      map[uint32][]*Effect // multimap
-	effectIndexer        map[*Effect]uint32   // TODO: How to sync iterator?
-	oathEffects          map[*Effect]*Effect
-	effectCollection     map[*Effect]struct{}
-	gainEffects          map[*card.Card]*Effect
-	grantEffectContainer map[*Effect]gainEffects
+	effectContainer      map[uint32][]*effect.Effect // multimap
+	effectIndexer        map[*effect.Effect]uint32   // TODO: How to sync iterator?
+	oathEffects          map[*effect.Effect]*effect.Effect
+	effectCollection     map[*effect.Effect]struct{}
+	gainEffects          map[*card.Card]*effect.Effect
+	grantEffectContainer map[*effect.Effect]gainEffects
 )
 
 type FieldEffect struct {
@@ -196,8 +192,8 @@ type LpCost struct {
 type ProcessorUnit struct {
 	Type    uint16
 	Step    uint16
-	PEffect *Effect
-	PTarget *Group
+	PEffect *effect.Effect
+	PTarget *group.Group
 	Arg1    common.Ptr
 	Arg2    common.Ptr
 	Arg3    common.Ptr
