@@ -2,8 +2,8 @@ package card
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/group"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type CardData struct {
@@ -49,7 +49,7 @@ type CardState struct {
 	PZone        bool
 	ReasonCard   *Card
 	ReasonPlayer uint8
-	ReasonEffect *effect.Effect
+	ReasonEffect interfaces.Effect
 }
 
 func NewCardState() *CardState {

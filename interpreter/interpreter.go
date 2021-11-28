@@ -1,7 +1,7 @@
 package interpreter
 
 import (
-	"github.com/RyoJerryYu/GocgCore/duel"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -12,7 +12,7 @@ type paramList []struct { // TODO: pair
 }
 
 type Interpreter struct {
-	PDuel        *duel.Duel
+	PDuel        interfaces.Duel
 	MsgBuf       [64]byte // TODO: char[64]
 	LuaState     *lua.LState
 	CurrentState *lua.LState

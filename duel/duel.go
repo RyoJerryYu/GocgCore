@@ -1,14 +1,13 @@
 package duel
 
 import (
-	"github.com/RyoJerryYu/GocgCore/card"
-	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/field"
 	"github.com/RyoJerryYu/GocgCore/group"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 	"github.com/RyoJerryYu/GocgCore/interpreter"
 )
 
-// type cardSet map[*card.Card]struct{} // TODO: comparator
+// type cardSet map[interfaces.Card]struct{} // TODO: comparator
 
 type Duel struct {
 	StrBuffer string
@@ -18,10 +17,10 @@ type Duel struct {
 	Lua       interpreter.Interpreter
 	GameField *field.Field
 	Random    Randomer
-	Cards     map[*card.Card]struct{}
-	Assumes   map[*card.Card]struct{}
+	Cards     map[interfaces.Card]struct{}
+	Assumes   map[interfaces.Card]struct{}
 	Groups    map[*group.Group]struct{}
 	SGroups   map[*group.Group]struct{}
-	Effects   map[*effect.Effect]struct{}
-	UnCopy    map[*effect.Effect]struct{}
+	Effects   map[interfaces.Effect]struct{}
+	UnCopy    map[interfaces.Effect]struct{}
 }

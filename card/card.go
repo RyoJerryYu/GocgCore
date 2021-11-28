@@ -2,9 +2,8 @@ package card
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/duel"
-	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/effectset"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type EffectRelationHash struct {
@@ -21,10 +20,10 @@ struct effect_relation_hash {
 
 type (
 	cardVector      []*Card
-	effectContainer map[uint32][]*effect.Effect // symulate multimap
-	cardSet         map[*Card]struct{}          // TODO: symulate set, ignoring comparator
-	effectIndexer   map[*effect.Effect]uint     // TODO: iterator
-	effectRelation  map[uint16]*effect.Effect   // TODO: comparator
+	effectContainer map[uint32][]interfaces.Effect // symulate multimap
+	cardSet         map[*Card]struct{}             // TODO: symulate set, ignoring comparator
+	effectIndexer   map[interfaces.Effect]uint     // TODO: iterator
+	effectRelation  map[uint16]interfaces.Effect   // TODO: comparator
 	relationMap     map[*Card]uint32
 	counterMap      map[uint16][2]uint16
 	effectCount     map[uint32]int32
@@ -68,7 +67,7 @@ func (stp *sendToParamT) Clear() {
 
 type Card struct {
 	RefHandle             int32
-	PDuel                 *duel.Duel
+	PDuel                 interfaces.Duel
 	Data                  CardData
 	Previous              CardState
 	Temp                  CardState
@@ -99,7 +98,7 @@ type Card struct {
 	UniqueCode            uint32
 	UniqueLocation        uint32
 	UniqueFunction        uint32
-	UniqueEffect          *effect.Effect
+	UniqueEffect          interfaces.Effect
 	SPSummonCode          uint32
 	SPSummonCounter       [2]uint16
 	AssumeType            uint8
