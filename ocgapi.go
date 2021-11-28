@@ -3,32 +3,31 @@ package main
 //#cgo CFLAGS: -I.
 //#include "ocgapi.h"
 import "C"
-import "unsafe"
 
 func main() {}
 
 // TODO: demo for function pointer, change as what in ocgapi
-type scriptReader func(*C.char, *C.int) *C.byte
-type cardReader func(C.uint32, *C.card_data) C.uint32
-type messageHandler func(unsafe.Pointer, C.uint32) C.uint32
+// type scriptReader func(*C.char, *C.int) *C.byte
+// type cardReader func(C.uint32, *C.card_data) C.uint32
+// type messageHandler func(unsafe.Pointer, C.uint32) C.uint32
 
-func ScriptReader(reader C.script_reader) scriptReader {
-	return func(scriptName *C.char, len *C.int) *C.byte {
-		return C.read_script(reader, scriptName, len)
-	}
-}
+// func ScriptReader(reader C.script_reader) scriptReader {
+// 	return func(scriptName *C.char, len *C.int) *C.byte {
+// 		return C.read_script(reader, scriptName, len)
+// 	}
+// }
 
-func CardReader(reader C.card_reader) cardReader {
-	return func(code C.uint32, data *C.card_data) C.uint32 {
-		return C.read_card(reader, code, data)
-	}
-}
+// func CardReader(reader C.card_reader) cardReader {
+// 	return func(code C.uint32, data *C.card_data) C.uint32 {
+// 		return C.read_card(reader, code, data)
+// 	}
+// }
 
-func MessageHandler(f C.message_handler) messageHandler {
-	return func(pduel unsafe.Pointer, messageType C.uint32) C.uint32 {
-		return C.handle_message(f, pduel, messageType)
-	}
-}
+// func MessageHandler(f C.message_handler) messageHandler {
+// 	return func(pduel unsafe.Pointer, messageType C.uint32) C.uint32 {
+// 		return C.handle_message(f, pduel, messageType)
+// 	}
+// }
 
 //export set_script_reader
 func set_script_reader(f C.script_reader) {
