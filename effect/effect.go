@@ -1,12 +1,9 @@
 package effect
 
-import "github.com/RyoJerryYu/GocgCore/common"
-
-type (
-	Card   interface{}
-	Duel   interface{}
-	Group  interface{}
-	TEvent interface{}
+import (
+	"github.com/RyoJerryYu/GocgCore/card"
+	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/duel"
 )
 
 // TODO: Maybe should type EffectSet interface{} ?
@@ -16,9 +13,9 @@ type EffectFlag2 uint32
 
 type Effect struct {
 	RefHandle      int32
-	PDual          Duel
-	Owner          Card
-	Handler        Card
+	PDual          *duel.Duel
+	Owner          *card.Card
+	Handler        *card.Card
 	EffectOwner    uint8
 	Description    uint32
 	Code           uint32
@@ -40,7 +37,7 @@ type Effect struct {
 	ActiveType     uint32
 	ActiveLocation uint16
 	ActiveSequence uint16
-	ActiveHandler  Card
+	ActiveHandler  *card.Card
 	Status         uint16
 	Label          []uint32
 	LabelObject    int32
@@ -53,7 +50,7 @@ type Effect struct {
 
 // In Golang, there is no need to use keyword explicit.
 // In Golang, there is no need to define a destructor.
-func NewEffect(pd Duel) *Effect {
+func NewEffect(pd *duel.Duel) *Effect {
 	// TODO: use default zero value instead
 	return &Effect{
 		RefHandle:      0,

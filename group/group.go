@@ -3,14 +3,14 @@ package group
 import (
 	"github.com/RyoJerryYu/GocgCore/card"
 	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/duel"
 )
 
 type cardSet map[*card.Card]struct{}
-type Duel struct{}
 
 type Group struct {
 	RefHandle  int32
-	PDuel      *Duel
+	PDuel      *duel.Duel
 	Container  cardSet
 	It         uint32 // TODO: iterator of cardSet
 	IsReadOnly uint32
@@ -21,7 +21,7 @@ func (g *Group) HasCard(c *card.Card) bool {
 	return ok
 }
 
-func NewGroup(pd *Duel) *Group {
+func NewGroup(pd *duel.Duel) *Group {
 	return &Group{
 		RefHandle:  0,
 		PDuel:      pd,
@@ -29,7 +29,7 @@ func NewGroup(pd *Duel) *Group {
 	}
 }
 
-func NewGroupWithCard(pd *Duel, c *card.Card) *Group {
+func NewGroupWithCard(pd *duel.Duel, c *card.Card) *Group {
 	return &Group{
 		RefHandle: 0,
 		PDuel:     pd,
@@ -40,7 +40,7 @@ func NewGroupWithCard(pd *Duel, c *card.Card) *Group {
 	}
 }
 
-func NewGroupWithCardSet(pd *Duel, cs cardSet) *Group {
+func NewGroupWithCardSet(pd *duel.Duel, cs cardSet) *Group {
 	return &Group{
 		RefHandle:  0,
 		PDuel:      pd,

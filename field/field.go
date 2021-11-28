@@ -1,6 +1,9 @@
 package field
 
-import "github.com/RyoJerryYu/GocgCore/card"
+import (
+	"github.com/RyoJerryYu/GocgCore/card"
+	"github.com/RyoJerryYu/GocgCore/duel"
+)
 
 // type (
 // effectContainer map[uint32][]*Effect
@@ -15,7 +18,7 @@ import "github.com/RyoJerryYu/GocgCore/card"
 // )
 
 type Field struct {
-	PDuel    *Duel
+	PDuel    *duel.Duel
 	Player   [2]PlayerInfo
 	TempCard *card.Card
 	Infos    fieldInfo
@@ -28,7 +31,7 @@ type Field struct {
 
 var FieldUsedCount [32]int32
 
-func NewField(duel *Duel) *Field {
+func NewField(duel *duel.Duel) *Field {
 	return &Field{
 		PDuel: duel,
 	}

@@ -5,9 +5,8 @@ import (
 	"github.com/RyoJerryYu/GocgCore/effect"
 	"github.com/RyoJerryYu/GocgCore/field"
 	"github.com/RyoJerryYu/GocgCore/group"
+	"github.com/RyoJerryYu/GocgCore/interpreter"
 )
-
-type Interpreter struct{}
 
 // type cardSet map[*card.Card]struct{} // TODO: comparator
 
@@ -16,7 +15,7 @@ type Duel struct {
 	Buffer    [0x1000]byte
 	BufferLen uint32
 	BufferP   *byte
-	Lua       Interpreter
+	Lua       interpreter.Interpreter
 	GameField *field.Field
 	Random    Randomer
 	Cards     map[*card.Card]struct{}
