@@ -40,5 +40,8 @@ typedef byte* (*script_reader)(const char*, int*);
 typedef uint32 (*card_reader)(uint32, card_data*);
 typedef uint32 (*message_handler)(void*, uint32);
 
+byte* read_script(script_reader reader, const char* script_name, int* len);
+uint32 read_card(card_reader reader, uint32 code, card_data* data);
+uint32 handle_message(message_handler handler, void* pduel, uint32 message_type);
 
 #endif /* OCGAPI_H_ */
