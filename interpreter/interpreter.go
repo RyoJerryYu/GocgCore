@@ -1,7 +1,7 @@
 package interpreter
 
 import (
-	"github.com/RyoJerryYu/GocgCore/interfaces"
+	"github.com/RyoJerryYu/GocgCore/field"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -12,7 +12,7 @@ type paramList []struct { // TODO: pair
 }
 
 type Interpreter struct {
-	PDuel        interfaces.Duel
+	PDuel        field.Duel
 	MsgBuf       [64]byte // TODO: char[64]
 	LuaState     *lua.LState
 	CurrentState *lua.LState

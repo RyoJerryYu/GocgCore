@@ -1,9 +1,5 @@
 package field
 
-import (
-	"github.com/RyoJerryYu/GocgCore/interfaces"
-)
-
 // type (
 // effectContainer map[uint32][]*Effect
 // cardSet map[interfaces.Card]struct{}
@@ -17,9 +13,9 @@ import (
 // )
 
 type Field struct {
-	PDuel    interfaces.Duel
+	PDuel    Duel
 	Player   [2]PlayerInfo
-	TempCard interfaces.Card
+	TempCard Card
 	Infos    fieldInfo
 	// Cost     [2]LpCost
 	Effects  FieldEffect
@@ -30,7 +26,7 @@ type Field struct {
 
 var FieldUsedCount [32]int32
 
-func NewField(duel interfaces.Duel) *Field {
+func NewField(duel Duel) *Field {
 	return &Field{
 		PDuel: duel,
 	}
