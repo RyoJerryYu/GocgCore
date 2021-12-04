@@ -1,16 +1,13 @@
 package field
 
 import (
-	"github.com/RyoJerryYu/GocgCore/card"
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/group"
-	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type TEvent struct {
-	TriggerCard  interfaces.Card
-	EventCards   *group.Group
-	ReasonEffect interfaces.Effect
+	TriggerCard  Card
+	EventCards   Group
+	ReasonEffect Effect
 	EventCode    uint32
 	EventValue   uint32
 	Reason       uint32
@@ -37,7 +34,7 @@ func (te *TEvent) LessThan(v *TEvent) bool {
 }
 
 type OpTarget struct {
-	OpCards  *group.Group
+	OpCards  Group
 	OpCount  uint8
 	OpPlayer uint8
 	OpParam  uint32
@@ -63,13 +60,13 @@ type Chain struct {
 	TriggeringLocation  uint16
 	TriggeringSequence  uint8
 	TriggeringPosition  uint8
-	TriggeringState     card.CardState
-	TriggeringEffect    interfaces.Effect
-	TargetCards         *group.Group
+	TriggeringState     CardState
+	TriggeringEffect    Effect
+	TargetCards         Group
 	ReplaceOp           int32
 	TargetPlayer        uint8
 	TargetParam         int32
-	DisableReason       interfaces.Effect
+	DisableReason       Effect
 	DisablePlayer       uint8
 	Evt                 TEvent
 	OpInfos             opMap
@@ -85,7 +82,7 @@ func NewChain() *Chain {
 		TriggeringLocation:  0,
 		TriggeringSequence:  0,
 		TriggeringPosition:  0,
-		TriggeringState:     *card.NewCardState(), // TODO: use default value
+		TriggeringState:     *NewCardState(), // TODO: use default value
 		TriggeringEffect:    nil,
 		TargetCards:         nil,
 		ReplaceOp:           0,
@@ -98,7 +95,7 @@ func NewChain() *Chain {
 	}
 }
 
-type cardVector []interfaces.Card
+type cardVector []Card
 
 type PlayerInfo struct {
 	Lp               int32
@@ -133,12 +130,12 @@ func NewPlayerInfo() *PlayerInfo {
 }
 
 type (
-	effectContainer      map[uint32][]interfaces.Effect // multimap
-	effectIndexer        map[interfaces.Effect]uint32   // TODO: How to sync iterator?
-	oathEffects          map[interfaces.Effect]interfaces.Effect
-	effectCollection     map[interfaces.Effect]struct{}
-	gainEffects          map[interfaces.Card]interfaces.Effect
-	grantEffectContainer map[interfaces.Effect]gainEffects
+	effectContainer      map[uint32][]Effect // multimap
+	effectIndexer        map[Effect]uint32   // TODO: How to sync iterator?
+	oathEffects          map[Effect]Effect
+	effectCollection     map[Effect]struct{}
+	gainEffects          map[Card]Effect
+	grantEffectContainer map[Effect]gainEffects
 )
 
 type FieldEffect struct {
@@ -157,8 +154,8 @@ type FieldEffect struct {
 	Rechargeable     effectCollection
 	SpSummonCountEff effectCollection
 
-	DisableCheckList []interfaces.Card
-	DisableCheckSet  map[interfaces.Card]struct{}
+	DisableCheckList []Card
+	DisableCheckSet  map[Card]struct{}
 
 	GrantEffect grantEffectContainer
 }
@@ -192,8 +189,8 @@ type LpCost struct {
 type ProcessorUnit struct {
 	Type    uint16
 	Step    uint16
-	PEffect interfaces.Effect
-	PTarget *group.Group
+	PEffect Effect
+	PTarget Group
 	Arg1    common.Ptr
 	Arg2    common.Ptr
 	Arg3    common.Ptr

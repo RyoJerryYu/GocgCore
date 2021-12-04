@@ -2,26 +2,23 @@ package field
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/effectset"
-	"github.com/RyoJerryYu/GocgCore/group"
-	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type (
-	effectVector []interfaces.Effect
+	effectVector []Effect
 	// TODO: check redeclear and in-class type define
-	// cardVector   []interfaces.Card
+	// cardVector   []Card
 	optionVector []uint32
-	// cardList      []interfaces.Card //  unused
+	// cardList      []Card //  unused
 	eventList     []*TEvent // TODO: use list
 	chainList     []*Chain
-	instantFList  map[interfaces.Effect]Chain
+	instantFList  map[Effect]Chain
 	chainArray    []Chain
 	processorList []*ProcessorUnit
-	cardSet       map[interfaces.Card]struct{}
+	cardSet       map[Card]struct{}
 
 	delayedEffectCollection map[struct {
-		interfaces.Effect
+		Effect
 		TEvent
 	}]struct{}
 	chainLimitT struct {
@@ -100,16 +97,16 @@ type Processor struct {
 	DelayedEnableSet       cardSet
 	SetGroupPreSet         cardSet
 	SetGroupSet            cardSet
-	DisfieldEffects        effectset.EffectSet // TODO: use effect set v
-	ExtraMzoneEffects      effectset.EffectSet
-	ExtraSzoneEffects      effectset.EffectSet
-	ResetedEffects         map[interfaces.Effect]struct{}
-	ReadjustMap            map[interfaces.Card]uint32
-	UniqueCards            [2]map[interfaces.Card]struct{}
+	DisfieldEffects        EffectSet // TODO: use effect set v
+	ExtraMzoneEffects      EffectSet
+	ExtraSzoneEffects      EffectSet
+	ResetedEffects         map[Effect]struct{}
+	ReadjustMap            map[Card]uint32
+	UniqueCards            [2]map[Card]struct{}
 	EffectCountCode        map[uint32]uint32
 	EffecctCountCodeDuel   map[uint32]uint32
 	SpSummonOnceMap        [2]map[uint32]uint32
-	XmaterialLst           map[int32][]interfaces.Card // TODO: use comarator
+	XmaterialLst           map[int32][]Card // TODO: use comarator
 
 	TempVar                    [4]common.Ptr
 	GlobalFlag                 uint32
@@ -122,24 +119,24 @@ type Processor struct {
 	WinPlayer                  uint8
 	WinReason                  uint8
 	ReAdjust                   uint8
-	ReasonEffect               interfaces.Effect
+	ReasonEffect               Effect
 	ReasonPlayer               uint8
-	SummoningCard              interfaces.Card
+	SummoningCard              Card
 	SummonDepth                uint8
 	SummonCancelable           uint8
-	Attacker                   interfaces.Card
-	AttackTarget               interfaces.Card
+	Attacker                   Card
+	AttackTarget               Card
 	LimitExtraSummonZone       uint32
 	LimitExtraSummonReleasable uint32
-	LimitTuner                 interfaces.Card
-	LimitSyn                   *group.Group
+	LimitTuner                 Card
+	LimitSyn                   Group
 	LimitSynMinc               int32
 	LimitSynMaxc               int32
-	LimitXyz                   *group.Group
+	LimitXyz                   Group
 	LimitXyzMinc               int32
 	LimitXyzMaxc               int32
-	LimitLink                  *group.Group
-	LimitLinkCard              interfaces.Card
+	LimitLink                  Group
+	LimitLinkCard              Card
 	LimitLinkMinc              int32
 	LimitLinkMaxc              int32
 	NotMaterial                uint8
@@ -165,7 +162,7 @@ type Processor struct {
 	SkipM2                     uint8
 	ChainAttack                uint8
 	ChainAttackerId            uint32
-	ChainAttackTarget          interfaces.Card
+	ChainAttackTarget          Card
 	AttackPlayer               uint8
 	SelfdesDisabled            uint8
 	Overdraw                   [2]uint8
