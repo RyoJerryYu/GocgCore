@@ -2,7 +2,7 @@ package effect
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/field"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 // TODO: Maybe should type EffectSet interface{} ?
@@ -12,9 +12,9 @@ type EffectFlag2 uint32
 
 type Effect struct {
 	RefHandle      int32
-	PDual          field.Duel
-	Owner          field.Card
-	Handler        field.Card
+	PDual          interfaces.Duel
+	Owner          interfaces.Card
+	Handler        interfaces.Card
 	EffectOwner    uint8
 	Description    uint32
 	Code           uint32
@@ -36,7 +36,7 @@ type Effect struct {
 	ActiveType     uint32
 	ActiveLocation uint16
 	ActiveSequence uint16
-	ActiveHandler  field.Card
+	ActiveHandler  interfaces.Card
 	Status         uint16
 	Label          []uint32
 	LabelObject    int32
@@ -47,11 +47,11 @@ type Effect struct {
 	Operation      int32
 }
 
-// var _ field.Effect = (*Effect)(nil)
+// var _ interfaces.Effect = (*Effect)(nil)
 
 // In Golang, there is no need to use keyword explicit.
 // In Golang, there is no need to define a destructor.
-func NewEffect(pd field.Duel) *Effect {
+func NewEffect(pd interfaces.Duel) *Effect {
 	// TODO: use default zero value instead
 	return &Effect{
 		PDual:       pd,
@@ -123,7 +123,7 @@ func (e *Effect) IsAvailable() int32 {
 	// TODO: Card.IsStatus()
 	// TODO: Card.GetStatus()
 	// TODO: Duel.Lua.AddParam()
-	// TODO: Duel.GameField.Infos.FieldID++, Field, FieldInfo
+	// TODO: Duel.Gameinterfaces.Infos.FieldID++, Field, FieldInfo
 	// }
 	return common.TRUE
 }
@@ -161,7 +161,7 @@ func (e *Effect) CheckCountLimit(playerId uint8) int32 {
 			code := e.CountCode & 0xfffffff // reduce the first 4 bit
 			// count := e.CountLimitMax
 			if code == 1 {
-				// TODO: Duel.GameField.GetEffectCode()
+				// TODO: Duel.Gameinterfaces.GetEffectCode()
 				// TODO: Card.FieldID
 				return common.FALSE
 			}
@@ -174,7 +174,7 @@ func (e *Effect) CheckCountLimit(playerId uint8) int32 {
 // for triggering effects, it checks EFFECT_FLAG_DAMAGE_STEP, EFFECT_FLAG_SET_AVAILABLE
 func (e *Effect) IsActivatable(
 	playerId uint8,
-	te field.TEvent,
+	te interfaces.TEvent,
 	neglectCost int32,
 	neglectTarget int32,
 	neglectLoc int32,
@@ -188,13 +188,13 @@ func (e *Effect) IsActivatable(
 	}
 	if e.IsFlag(EFFECT_FLAG_FIELD_ONLY) {
 		// TODO: Card.current.controler
-		// TODO: Duel.GameField.CheckUniqueOnfield()
+		// TODO: Duel.Gameinterfaces.CheckUniqueOnfield()
 		return common.FALSE
 	}
 	return common.TRUE
 }
 
-func (e *Effect) GetOwner() field.Card {
+func (e *Effect) GetOwner() interfaces.Card {
 	if e.ActiveHandler != nil {
 		return e.ActiveHandler
 	}
@@ -206,7 +206,7 @@ func (e *Effect) GetOwner() field.Card {
 	return e.Owner
 }
 
-func (e *Effect) GetHandler() field.Card {
+func (e *Effect) GetHandler() interfaces.Card {
 	if e.ActiveHandler != nil {
 		return e.ActiveHandler
 	}

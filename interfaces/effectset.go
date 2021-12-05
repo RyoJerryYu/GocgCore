@@ -1,4 +1,4 @@
-package field
+package interfaces
 
 // TODO: Should not be a type but an actual function
 // Maybe could be an method of Effect

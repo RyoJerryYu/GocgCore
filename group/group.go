@@ -2,25 +2,25 @@ package group
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
-	"github.com/RyoJerryYu/GocgCore/field"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
-type cardSet map[field.Card]struct{}
+type cardSet map[interfaces.Card]struct{}
 
 type Group struct {
 	RefHandle  int32
-	PDuel      field.Duel
+	PDuel      interfaces.Duel
 	Container  cardSet
 	It         uint32 // TODO: iterator of cardSet
 	IsReadOnly uint32
 }
 
-func (g *Group) HasCard(c field.Card) bool {
+func (g *Group) HasCard(c interfaces.Card) bool {
 	_, ok := g.Container[c]
 	return ok
 }
 
-func NewGroup(pd field.Duel) *Group {
+func NewGroup(pd interfaces.Duel) *Group {
 	return &Group{
 		RefHandle:  0,
 		PDuel:      pd,
@@ -28,7 +28,7 @@ func NewGroup(pd field.Duel) *Group {
 	}
 }
 
-func NewGroupWithCard(pd field.Duel, c field.Card) *Group {
+func NewGroupWithCard(pd interfaces.Duel, c interfaces.Card) *Group {
 	return &Group{
 		RefHandle: 0,
 		PDuel:     pd,
@@ -39,7 +39,7 @@ func NewGroupWithCard(pd field.Duel, c field.Card) *Group {
 	}
 }
 
-func NewGroupWithCardSet(pd field.Duel, cs cardSet) *Group {
+func NewGroupWithCardSet(pd interfaces.Duel, cs cardSet) *Group {
 	return &Group{
 		RefHandle:  0,
 		PDuel:      pd,

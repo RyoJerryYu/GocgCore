@@ -1,4 +1,4 @@
-package field
+package interfaces
 
 type Effect interface {
 	IsDisableRelated() int32
