@@ -1,7 +1,7 @@
 package duel
 
 import (
-	"github.com/RyoJerryYu/GocgCore/field"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 	"github.com/RyoJerryYu/GocgCore/interpreter"
 )
 
@@ -13,12 +13,12 @@ type Duel struct {
 	BufferLen uint32
 	BufferP   *byte
 	Lua       interpreter.Interpreter
-	GameField *field.Field
+	GameField *interfaces.Field
 	Random    Randomer
-	Cards     map[field.Card]struct{}
-	Assumes   map[field.Card]struct{}
-	Groups    map[field.Group]struct{}
-	SGroups   map[field.Group]struct{}
-	Effects   map[field.Effect]struct{}
-	UnCopy    map[field.Effect]struct{}
+	Cards     map[interfaces.Card]struct{}
+	Assumes   map[interfaces.Card]struct{}
+	Groups    map[interfaces.Group]struct{}
+	SGroups   map[interfaces.Group]struct{}
+	Effects   map[interfaces.Effect]struct{}
+	UnCopy    map[interfaces.Effect]struct{}
 }

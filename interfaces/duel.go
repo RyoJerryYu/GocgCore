@@ -1,4 +1,4 @@
-package field
+package interfaces
 
 type Duel interface {
 	NewCard(code uint32) Card

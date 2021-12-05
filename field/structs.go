@@ -2,100 +2,8 @@ package field
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
-
-type TEvent struct {
-	TriggerCard  Card
-	EventCards   Group
-	ReasonEffect Effect
-	EventCode    uint32
-	EventValue   uint32
-	Reason       uint32
-	EventPlayer  uint8
-	ReasonPlayer uint8
-}
-
-func NewTEvent() *TEvent {
-	// TODO: Change to default zero value
-	return &TEvent{
-		TriggerCard:  nil,
-		EventCards:   nil,
-		ReasonEffect: nil,
-		EventCode:    0,
-		EventValue:   0,
-		Reason:       0,
-		EventPlayer:  common.PLAYER_NONE,
-		ReasonPlayer: common.PLAYER_NONE,
-	}
-}
-
-func (te *TEvent) LessThan(v *TEvent) bool {
-	return false
-}
-
-type OpTarget struct {
-	OpCards  Group
-	OpCount  uint8
-	OpPlayer uint8
-	OpParam  uint32
-}
-
-func NewOpTarget() *OpTarget {
-	// TODO: Change to default zero value
-	return &OpTarget{
-		OpCards:  nil,
-		OpCount:  0,
-		OpPlayer: common.PLAYER_NONE,
-		OpParam:  0,
-	}
-}
-
-type opMap map[uint32]*OpTarget
-
-type Chain struct {
-	ChainId             uint16
-	ChainCount          uint8
-	TriggeringPlayer    uint8
-	TriggeringControler uint8
-	TriggeringLocation  uint16
-	TriggeringSequence  uint8
-	TriggeringPosition  uint8
-	TriggeringState     CardState
-	TriggeringEffect    Effect
-	TargetCards         Group
-	ReplaceOp           int32
-	TargetPlayer        uint8
-	TargetParam         int32
-	DisableReason       Effect
-	DisablePlayer       uint8
-	Evt                 TEvent
-	OpInfos             opMap
-	Flag                uint32
-}
-
-func NewChain() *Chain {
-	return &Chain{
-		ChainId:             0,
-		ChainCount:          0,
-		TriggeringPlayer:    common.PLAYER_NONE,
-		TriggeringControler: common.PLAYER_NONE,
-		TriggeringLocation:  0,
-		TriggeringSequence:  0,
-		TriggeringPosition:  0,
-		TriggeringState:     *NewCardState(), // TODO: use default value
-		TriggeringEffect:    nil,
-		TargetCards:         nil,
-		ReplaceOp:           0,
-		TargetPlayer:        common.PLAYER_NONE,
-		TargetParam:         0,
-		DisableReason:       nil,
-		DisablePlayer:       common.PLAYER_NONE,
-		Evt:                 *NewTEvent(), // TODO: USE DEFAULT VALUE
-		Flag:                0,
-	}
-}
-
-type cardVector []Card
 
 type PlayerInfo struct {
 	Lp               int32
@@ -105,16 +13,16 @@ type PlayerInfo struct {
 	DisabledLocation uint32
 	ExtraPCount      uint32
 	TagExtraPCount   uint32
-	ListMZone        cardVector
-	ListSZone        cardVector
-	ListMain         cardVector
-	ListGrave        cardVector
-	ListHand         cardVector
-	ListRemove       cardVector
-	ListExtra        cardVector
-	TagListMain      cardVector
-	TagListHand      cardVector
-	TagListExtra     cardVector
+	ListMZone        interfaces.CardVector
+	ListSZone        interfaces.CardVector
+	ListMain         interfaces.CardVector
+	ListGrave        interfaces.CardVector
+	ListHand         interfaces.CardVector
+	ListRemove       interfaces.CardVector
+	ListExtra        interfaces.CardVector
+	TagListMain      interfaces.CardVector
+	TagListHand      interfaces.CardVector
+	TagListExtra     interfaces.CardVector
 }
 
 func NewPlayerInfo() *PlayerInfo {
@@ -130,12 +38,12 @@ func NewPlayerInfo() *PlayerInfo {
 }
 
 type (
-	effectContainer      map[uint32][]Effect // multimap
-	effectIndexer        map[Effect]uint32   // TODO: How to sync iterator?
-	oathEffects          map[Effect]Effect
-	effectCollection     map[Effect]struct{}
-	gainEffects          map[Card]Effect
-	grantEffectContainer map[Effect]gainEffects
+	effectContainer      map[uint32][]interfaces.Effect // multimap
+	effectIndexer        map[interfaces.Effect]uint32   // TODO: How to sync iterator?
+	oathEffects          map[interfaces.Effect]interfaces.Effect
+	effectCollection     map[interfaces.Effect]struct{}
+	gainEffects          map[interfaces.Card]interfaces.Effect
+	grantEffectContainer map[interfaces.Effect]gainEffects
 )
 
 type FieldEffect struct {
@@ -154,8 +62,8 @@ type FieldEffect struct {
 	Rechargeable     effectCollection
 	SpSummonCountEff effectCollection
 
-	DisableCheckList []Card
-	DisableCheckSet  map[Card]struct{}
+	DisableCheckList []interfaces.Card
+	DisableCheckSet  map[interfaces.Card]struct{}
 
 	GrantEffect grantEffectContainer
 }
@@ -189,8 +97,8 @@ type LpCost struct {
 type ProcessorUnit struct {
 	Type    uint16
 	Step    uint16
-	PEffect Effect
-	PTarget Group
+	PEffect interfaces.Effect
+	PTarget interfaces.Group
 	Arg1    common.Ptr
 	Arg2    common.Ptr
 	Arg3    common.Ptr

@@ -1,11 +1,11 @@
-package field
+package interfaces
 
 import "github.com/RyoJerryYu/GocgCore/common"
 
 // TODO: check redeclaration
-// type (
-// 	effectContainer map[uint32][]Effect
-// )
+type (
+	effectContainer map[uint32][]Effect
+)
 
 type Card interface {
 	IsExtraDeckMonster() bool
@@ -175,6 +175,7 @@ type Card interface {
 }
 
 type CardSet map[Card]struct{} // TODO: Card Comparator
+type CardVector []Card
 
 type MaterialInfo struct {
 	// Synchron
@@ -284,4 +285,23 @@ func (cs *CardState) IsLocation(loc int32) bool {
 		return true
 	}
 	return false
+}
+
+type CardData struct {
+	Code       uint32
+	Alias      uint32
+	SetCode    uint64
+	Type       uint32
+	Level      uint32
+	Attribute  uint32
+	Race       uint32
+	Attack     int32
+	Defense    int32
+	LScale     uint32
+	RScale     uint32
+	LinkMarker uint32
+}
+
+func (cd *CardData) Clear() {
+	*cd = CardData{}
 }

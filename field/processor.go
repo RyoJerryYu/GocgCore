@@ -2,24 +2,25 @@ package field
 
 import (
 	"github.com/RyoJerryYu/GocgCore/common"
+	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
 type (
-	effectVector []Effect
+	effectVector []interfaces.Effect
 	// TODO: check redeclear and in-class type define
-	// cardVector   []Card
+	// interfaces.CardVector   []Card
 	optionVector []uint32
 	// cardList      []Card //  unused
-	eventList     []*TEvent // TODO: use list
-	chainList     []*Chain
-	instantFList  map[Effect]Chain
-	chainArray    []Chain
+	eventList     []*interfaces.TEvent // TODO: use list
+	chainList     []*interfaces.Chain
+	instantFList  map[interfaces.Effect]interfaces.Chain
+	chainArray    []interfaces.Chain
 	processorList []*ProcessorUnit
-	cardSet       map[Card]struct{}
+	cardSet       map[interfaces.Card]struct{}
 
 	delayedEffectCollection map[struct {
-		Effect
-		TEvent
+		interfaces.Effect
+		interfaces.TEvent
 	}]struct{}
 	chainLimitT struct {
 		Function int32
@@ -36,17 +37,17 @@ type Processor struct {
 	Units                  processorList
 	SubUnits               processorList
 	Reserved               ProcessorUnit
-	SelectCards            cardVector
-	UnSelectCards          cardVector
-	SummonableCards        cardVector
-	SpSummonableCards      cardVector
-	RepositionableCards    cardVector
-	MSetableCards          cardVector
-	SSetableCards          cardVector
-	AttackableCards        cardVector
+	SelectCards            interfaces.CardVector
+	UnSelectCards          interfaces.CardVector
+	SummonableCards        interfaces.CardVector
+	SpSummonableCards      interfaces.CardVector
+	RepositionableCards    interfaces.CardVector
+	MSetableCards          interfaces.CardVector
+	SSetableCards          interfaces.CardVector
+	AttackableCards        interfaces.CardVector
 	SelectEffects          effectVector
 	SelectOptions          optionVector
-	MustSelectCards        cardVector
+	MustSelectCards        interfaces.CardVector
 	PointEvent             eventList
 	InstantEvent           eventList
 	QueueEvent             eventList
@@ -97,16 +98,16 @@ type Processor struct {
 	DelayedEnableSet       cardSet
 	SetGroupPreSet         cardSet
 	SetGroupSet            cardSet
-	DisfieldEffects        EffectSet // TODO: use effect set v
-	ExtraMzoneEffects      EffectSet
-	ExtraSzoneEffects      EffectSet
-	ResetedEffects         map[Effect]struct{}
-	ReadjustMap            map[Card]uint32
-	UniqueCards            [2]map[Card]struct{}
+	DisfieldEffects        interfaces.EffectSet // TODO: use effect set v
+	ExtraMzoneEffects      interfaces.EffectSet
+	ExtraSzoneEffects      interfaces.EffectSet
+	ResetedEffects         map[interfaces.Effect]struct{}
+	ReadjustMap            map[interfaces.Card]uint32
+	UniqueCards            [2]map[interfaces.Card]struct{}
 	EffectCountCode        map[uint32]uint32
 	EffecctCountCodeDuel   map[uint32]uint32
 	SpSummonOnceMap        [2]map[uint32]uint32
-	XmaterialLst           map[int32][]Card // TODO: use comarator
+	XmaterialLst           map[int32][]interfaces.Card // TODO: use comarator
 
 	TempVar                    [4]common.Ptr
 	GlobalFlag                 uint32
@@ -119,24 +120,24 @@ type Processor struct {
 	WinPlayer                  uint8
 	WinReason                  uint8
 	ReAdjust                   uint8
-	ReasonEffect               Effect
+	ReasonEffect               interfaces.Effect
 	ReasonPlayer               uint8
-	SummoningCard              Card
+	SummoningCard              interfaces.Card
 	SummonDepth                uint8
 	SummonCancelable           uint8
-	Attacker                   Card
-	AttackTarget               Card
+	Attacker                   interfaces.Card
+	AttackTarget               interfaces.Card
 	LimitExtraSummonZone       uint32
 	LimitExtraSummonReleasable uint32
-	LimitTuner                 Card
-	LimitSyn                   Group
+	LimitTuner                 interfaces.Card
+	LimitSyn                   interfaces.Group
 	LimitSynMinc               int32
 	LimitSynMaxc               int32
-	LimitXyz                   Group
+	LimitXyz                   interfaces.Group
 	LimitXyzMinc               int32
 	LimitXyzMaxc               int32
-	LimitLink                  Group
-	LimitLinkCard              Card
+	LimitLink                  interfaces.Group
+	LimitLinkCard              interfaces.Card
 	LimitLinkMinc              int32
 	LimitLinkMaxc              int32
 	NotMaterial                uint8
@@ -162,7 +163,7 @@ type Processor struct {
 	SkipM2                     uint8
 	ChainAttack                uint8
 	ChainAttackerId            uint32
-	ChainAttackTarget          Card
+	ChainAttackTarget          interfaces.Card
 	AttackPlayer               uint8
 	SelfdesDisabled            uint8
 	Overdraw                   [2]uint8
