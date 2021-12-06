@@ -5,24 +5,20 @@ import (
 	"github.com/RyoJerryYu/GocgCore/interfaces"
 )
 
-type cardSet map[interfaces.Card]struct{}
-
 type Group struct {
-	RefHandle  int32
-	PDuel      interfaces.Duel
-	Container  cardSet
-	It         uint32 // TODO: iterator of cardSet
+	RefHandle int32
+	PDuel     interfaces.Duel
+	Container interfaces.CardSet
+	// It         uint32 // TODO: iterator of cardSet
 	IsReadOnly uint32
 }
 
 func (g *Group) HasCard(c interfaces.Card) bool {
-	_, ok := g.Container[c]
-	return ok
+	return g.Container.HasCard(c)
 }
 
 func NewGroup(pd interfaces.Duel) *Group {
 	return &Group{
-		RefHandle:  0,
 		PDuel:      pd,
 		IsReadOnly: common.FALSE,
 	}
@@ -30,18 +26,14 @@ func NewGroup(pd interfaces.Duel) *Group {
 
 func NewGroupWithCard(pd interfaces.Duel, c interfaces.Card) *Group {
 	return &Group{
-		RefHandle: 0,
-		PDuel:     pd,
-		Container: cardSet{
-			c: {},
-		},
+		PDuel:      pd,
+		Container:  interfaces.NewCardSet(c),
 		IsReadOnly: common.FALSE,
 	}
 }
 
-func NewGroupWithCardSet(pd interfaces.Duel, cs cardSet) *Group {
+func NewGroupWithCardSet(pd interfaces.Duel, cs interfaces.CardSet) *Group {
 	return &Group{
-		RefHandle:  0,
 		PDuel:      pd,
 		Container:  cs,
 		IsReadOnly: common.FALSE,
