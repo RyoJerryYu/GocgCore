@@ -8,6 +8,8 @@ type (
 )
 
 type Card interface {
+	GetId() uint16 // defined as card_sort
+
 	IsExtraDeckMonster() bool
 
 	GetInfos(buf *byte, queryFlag int32, useCache int32) uint32
@@ -174,7 +176,25 @@ type Card interface {
 	IsCanBeLinkMaterial(scard Card) int32
 }
 
-type CardSet map[Card]struct{} // TODO: Card Comparator
+type CardSet map[uint16]Card // TODO: Now Unsorted set. But actually sorted set in origin.
+
+func NewCardSet(c Card) CardSet {
+	return map[uint16]Card{c.GetId(): c}
+}
+
+func (s CardSet) Insert(c Card) {
+	s[c.GetId()] = c
+}
+
+func (s CardSet) Remove(c Card) {
+	delete(s, c.GetId())
+}
+
+func (s CardSet) HasCard(c Card) bool {
+	_, ok := s[c.GetId()]
+	return ok
+}
+
 type CardVector []Card
 
 type MaterialInfo struct {
