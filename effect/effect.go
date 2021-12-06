@@ -47,7 +47,7 @@ type Effect struct {
 	Operation      int32
 }
 
-// var _ interfaces.Effect = (*Effect)(nil)
+var _ interfaces.Effect = (*Effect)(nil)
 
 // In Golang, there is no need to use keyword explicit.
 // In Golang, there is no need to define a destructor.
@@ -216,4 +216,139 @@ func (e *Effect) GetHandler() interfaces.Card {
 		return nil
 	}
 	return e.Handler
+}
+func (ef *Effect) IsActivateable(playerid uint8, e interfaces.TEvent, neglectCond int32, neglectCost int32, neglectTarget int32, neglectLoc int32, neglectFaceup int32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsActionCheck(playerid uint8) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsActivateReadyWithEffect(reasonEffect interfaces.Effect, playerid uint8, e interfaces.TEvent, neglectCond int32, neglectCost int32, neglectTarget int32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsActivateReady(playerid uint8, e interfaces.TEvent, neglectCond int32, neglectCost int32, neglectTarget int32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsConditionCheck(playerid uint8, e interfaces.TEvent) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsActivateCheck(playerid uint8, e interfaces.TEvent, neglectCond int32, neglectCost int32, neglectTarget int32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsTarget(pcard interfaces.Card) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsFitTargetFunction(pcard interfaces.Card) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsTargetPlayer(playerid uint8) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsPlayerEffectTarget(pcard interfaces.Card) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsImmuned(pcard interfaces.Card) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsChainable(tp uint8) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) IsHandTrigger() int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) Reset(resetLevel uint32, resetType uint32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) DecCount(playerid uint32) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) Recharge() {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValue(extraargs uint32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValueFromCard(pcard interfaces.Card, extraargs uint32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValueFromEffect(peffect interfaces.Effect, extraargs uint32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValueToRes(extraargs uint32, result *[]int32) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValueFromCardToRes(pcard interfaces.Card, extraargs uint32, result *[]int32) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetValueFromEffectToRes(peffect interfaces.Effect, extraargs uint32, result *[]int32) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) CheckValueCondition(extraargs uint32) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetLabelObject() *int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetSpeed() int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) Clone() interfaces.Effect {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetOwnerPlayer() uint8 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetHandlerPlayer() uint8 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) InRangeFromCard(pcard interfaces.Card) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) InRangeFromChain(ch interfaces.Chain) int32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) SetActivateLocation() {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) SetActiveType() {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetActiveType() uint32 {
+	panic("not implemented") // TODO: Implement
+}
+
+func (ef *Effect) GetCodeType() int32 {
+	panic("not implemented") // TODO: Implement
 }

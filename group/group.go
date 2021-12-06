@@ -13,6 +13,8 @@ type Group struct {
 	IsReadOnly uint32
 }
 
+var _ interfaces.Group = (*Group)(nil)
+
 func (g *Group) HasCard(c interfaces.Card) bool {
 	return g.Container.HasCard(c)
 }
