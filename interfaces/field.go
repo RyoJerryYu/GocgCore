@@ -3,7 +3,7 @@ package interfaces
 import "github.com/RyoJerryYu/GocgCore/common"
 
 type (
-	chainList []*Chain
+	ChainList []*Chain
 )
 
 type Field interface {
@@ -155,7 +155,7 @@ type Field interface {
 	ProcessQuickEffect(step int16, skipFreechain int32, priority uint8) int32
 	ProcessInstantEvent() int32
 	ProcessSingleEvent() int32
-	ProcessSingleEventThat(peffect Effect, e TEvent, tp chainList, ntp chainList) int32
+	ProcessSingleEventThat(peffect Effect, e TEvent, tp ChainList, ntp ChainList) int32
 	ProcessIdleCommand(step uint16) int32
 	ProcessBattleCommand(step uint16) int32
 	ProcessDamageStep(step uint16, newAttack uint32) int32

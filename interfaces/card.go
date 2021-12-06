@@ -4,7 +4,7 @@ import "github.com/RyoJerryYu/GocgCore/common"
 
 // TODO: check redeclaration
 type (
-	effectContainer map[uint32][]Effect
+	EffectContainer map[uint32][]Effect
 )
 
 type Card interface {
@@ -76,7 +76,7 @@ type Card interface {
 	EnableFieldEffect(enabled bool)
 	AddEffect(peffect Effect) int32
 	RemoveEffect(peffect Effect)
-	RemoveEffectInContainer(peffect Effect, iterator effectContainer) // TODO: How to define a iterator
+	RemoveEffectInContainer(peffect Effect, iterator EffectContainer) // TODO: How to define a iterator
 	CopyEffect(code uint32, reset uint32, count uint32) int32
 	ReplaceEffect(code uint32, reset uint32, count uint32) int32
 	Reset(id uint32, resetType uint32)
