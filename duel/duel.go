@@ -1,6 +1,10 @@
 package duel
 
 import (
+	"github.com/RyoJerryYu/GocgCore/card"
+	"github.com/RyoJerryYu/GocgCore/effect"
+	"github.com/RyoJerryYu/GocgCore/field"
+	"github.com/RyoJerryYu/GocgCore/group"
 	"github.com/RyoJerryYu/GocgCore/interfaces"
 	"github.com/RyoJerryYu/GocgCore/interpreter"
 )
@@ -27,8 +31,8 @@ var _ interfaces.Duel = (*Duel)(nil)
 
 func NewDuel() *Duel {
 	d := &Duel{}
-	// d.Lua = interpreter.NewInterpreter()
-	// d.GameField = field.NewField(d)
+	// TODO: d.Lua = interpreter.NewInterpreter()
+	d.GameField = field.NewField(d)
 	// TODO: game_field->temp_card = new_card(0)
 	return d
 }
@@ -38,53 +42,80 @@ func (d *Duel) Clear() {
 	d.Groups = nil
 	d.Effects = nil
 	d.GameField = nil
-	// TODO: finish here after implementing Duel interfaces for Duel
-	// d.GameField = field.NewField(d)
-	// game_field-> temp_card = new_card(0)
+	d.GameField = field.NewField(d)
+	// TODO: game_field-> temp_card = new_card(0)
 }
 
 func (d *Duel) NewCard(code uint32) interfaces.Card {
+	var pCard interfaces.Card = card.NewCard(d)
+	d.Cards[pCard] = struct{}{}
+	if code > 0 {
+		// TODO: d.readCard(pCard, code)
+	} else {
+		// TODO: pCard.Data.Clear()
+	}
 	return nil
 }
 
 func (d *Duel) registerGroup(pgroup interfaces.Group) interfaces.Group {
-	return nil
+	d.Groups[pgroup] = struct{}{}
+	if d.Lua.CallDepth != 0 {
+		d.SGroups[pgroup] = struct{}{}
+	}
+	// TODO: d.Lua.RegisterGroup(pgroup)
+	return pgroup
 }
 
 func (d *Duel) NewGroup() interfaces.Group {
-	return nil
+	pGroup := group.NewGroup(d)
+	return d.registerGroup(pGroup)
 }
 
 func (d *Duel) NewGroupByCard(card interfaces.Card) interfaces.Group {
-	return nil
+	pGroup := group.NewGroupWithCard(d, card)
+	return d.registerGroup(pGroup)
 }
 
 func (d *Duel) NewGroupByCardSet(cset interfaces.CardSet) interfaces.Group {
-	return nil
+	pGroup := group.NewGroupWithCardSet(d, cset)
+	return d.registerGroup(pGroup)
 }
 
 func (d *Duel) NewEffect() interfaces.Effect {
-	return nil
+	pEffect := effect.NewEffect(d)
+	d.Effects[pEffect] = struct{}{}
+	// TODO: d.Lua.RegisterEffect(pEffect)
+	return pEffect
 }
 
 func (d *Duel) DeleteCard(card interfaces.Card) {
-
+	delete(d.Cards, card)
 }
 
 func (d *Duel) DeleteGroup(group interfaces.Group) {
-
+	// TODO: d.Lua.UnregisterGroup(group)
+	delete(d.Groups, group)
+	delete(d.SGroups, group)
 }
 
 func (d *Duel) DeleteEffect(effect interfaces.Effect) {
-
+	// TODO: d.Lua.UnregisterEffect(effect)
+	delete(d.Effects, effect)
 }
 
 func (d *Duel) ReleaseScriptGroup() {
-	panic("not implemented") // TODO: Implement
+	for group := range d.SGroups {
+		if true { // TODO:group.IsReadonly()
+			d.DeleteGroup(group)
+		}
+	}
 }
 
 func (d *Duel) RestoreAssumes() {
-	panic("not implemented") // TODO: Implement
+	// for card := range d.Assumes {
+	// TODO: card.assumeType = 0
+	// }
+	d.Assumes = nil
 }
 
 func (d *Duel) ReadBuffer(buf *byte) int32 {
@@ -116,5 +147,7 @@ func (d *Duel) SetResponseb(resp *byte) {
 }
 
 func (d *Duel) GetNextInteger(lo int32, hi int32) int32 {
-	panic("not implemented") // TODO: Implement
+	// TODO: game_field->core.duel_options
+	// TODO: reduce type change
+	return int32(d.Random.GetRandomInteger(int(lo), int(hi)))
 }
