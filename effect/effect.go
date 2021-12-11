@@ -47,7 +47,7 @@ type Effect struct {
 	Operation      int32
 }
 
-var _ interfaces.Effect = (*Effect)(nil)
+// var _ interfaces.Effect = (*Effect)(nil)
 
 // In Golang, there is no need to use keyword explicit.
 // In Golang, there is no need to define a destructor.
@@ -75,87 +75,198 @@ func (e *Effect) IsFlag2(flag EffectFlag2) bool {
 }
 
 // TODO: Why not return boolean?
-// TODO: use bit operation
-func (e *Effect) IsDisableRelated() int32 {
+// TODO: use bool, check
+func (e *Effect) IsDisableRelated() bool {
 	switch e.Code {
 	case EFFECT_IMMUNE_EFFECT, EFFECT_DISABLE, EFFECT_CANNOT_DISABLE, EFFECT_FORBIDDEN:
-		return common.TRUE
+		return true
 	default:
-		return common.FALSE
+		return false
 	}
 }
 
-func (e *Effect) IsSelfDestroyRelated() int32 {
+// TODO: use bool, check
+func (e *Effect) IsSelfDestroyRelated() bool {
 	switch e.Code {
 	case EFFECT_UNIQUE_CHECK, EFFECT_SELF_DESTROY, EFFECT_SELF_TOGRAVE:
-		return common.TRUE
+		return true
 	default:
-		return common.FALSE
+		return false
 	}
 }
 
-func (e *Effect) IsCanBeForbidden() int32 {
+func (e *Effect) IsCanBeForbidden() bool {
 	if e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) && !e.IsFlag(EFFECT_FLAG_CANNOT_NEGATE) {
-		return common.FALSE
+		return false
 	}
 	if e.Code == EFFECT_CHANGE_CODE {
-		return common.FALSE
+		return false
 	}
-	return common.TRUE
+	return true
 }
 
 // IsAvailable check if a single/field/equip effect is available
 // check properties: range, EFFECT_FLAG_OWNER_RELATE, STATUS_BATTLE_DESTROYED, STATUS_EFFECT_ENABLED, disabled/forbidden
 // check fucntions: condition
-func (e *Effect) IsAvailable() int32 {
+// TODO: use bool, check
+func (e *Effect) IsAvailable() bool {
 	if (e.Type & EFFECT_TYPE_ACTIONS) > 0 {
-		return common.FALSE
+		return false
 	}
-	// if (e.Type&(EFFECT_TYPE_SINGLE|EFFECT_TYPE_XMATERIAL) > 0) &&
-	// 	!(e.Type&EFFECT_TYPE_FIELD > 0) {
-	// pHandler := e.GetHandler()
-	// pOwner := e.GetOwner()
-	// TODO: Card.current.controler
-	// if e.IsFlag(EFFECT_FLAG_SINGLE_RANGE) &&
-	// TODO: Effect.InRage()
-	// TODO: Card.current.location
-	// TODO: Card.IsPosition()
-	// TODO: Card.IsStatus()
-	// TODO: Card.GetStatus()
+	if (e.Type&(EFFECT_TYPE_SINGLE|EFFECT_TYPE_XMATERIAL) > 0) &&
+		!(e.Type&EFFECT_TYPE_FIELD > 0) {
+		pHandler := e.GetHandler()
+		pOwner := e.GetOwner()
+		// // TODO: Card.current.controler
+		if e.IsFlag(EFFECT_FLAG_SINGLE_RANGE) && !e.InRangeFromCard(pHandler) {
+			return false
+		}
+		if e.IsFlag(EFFECT_FLAG_SINGLE_RANGE) &&
+			!(pHandler.GetStatus(common.STATUS_EFFECT_ENABLED) > 0) &&
+			!e.IsFlag(EFFECT_FLAG_IMMEDIATELY_APPLY) {
+			return false
+		}
+		// if e.IsFlag(EFFECT_FLAG_SINGLE_RANGE) &&
+		// (pHandler.c)
+		// TODO: Card.current.location
+		if e.IsFlag(EFFECT_FLAG_SINGLE_RANGE) &&
+			e.IsCanBeForbidden() &&
+			(pOwner.IsStatus(common.STATUS_FORBIDDEN) > 0) {
+			return false
+		}
+		if pOwner == pHandler &&
+			e.IsCanBeForbidden() &&
+			pOwner.IsStatus(common.STATUS_FORBIDDEN) > 0 {
+			return false
+		}
+		if e.IsFlag(EFFECT_FLAG_OWNER_RELATE) &&
+			!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+			pOwner.IsStatus(common.STATUS_BATTLE_DESTROYED) > 0 {
+			return false
+		}
+		if pOwner == pHandler &&
+			!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+			(pHandler.IsStatus(common.STATUS_DISABLED) > 0) {
+			return false
+		}
+	}
+
+	if e.Type&EFFECT_TYPE_EQUIP > 0 {
+		// if e.Handler.current.controler == PLAYER_NONE
+		// TODO: Card.current.controler
+		if e.IsFlag(EFFECT_FLAG_OWNER_RELATE) &&
+			e.IsCanBeForbidden() &&
+			e.Owner.IsStatus(common.STATUS_FORBIDDEN) > 0 {
+			return false
+		}
+		if e.Owner == e.Handler &&
+			e.IsCanBeForbidden() &&
+			e.Owner.IsStatus(common.STATUS_FORBIDDEN) > 0 {
+			return false
+		}
+		if e.IsFlag(EFFECT_FLAG_OWNER_RELATE) &&
+			!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+			e.Owner.IsStatus(common.STATUS_DISABLED) > 0 {
+			return false
+		}
+		if e.Owner == e.Handler &&
+			!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+			e.Handler.GetStatus(common.STATUS_DISABLED) > 0 {
+			return false
+		}
+		if !e.IsFlag(EFFECT_FLAG_SET_AVAILABLE) {
+			if !(e.Handler.GetStatus(common.STATUS_EFFECT_ENABLED) > 0) {
+				return false
+			}
+			if !(e.Handler.IsPosition(common.POS_FACEUP) > 0) {
+				return false
+			}
+		}
+	}
+
+	if e.Type&(EFFECT_TYPE_FIELD|EFFECT_TYPE_EQUIP) > 0 {
+		pHandler := e.GetHandler()
+		pOwner := e.GetOwner()
+		if !e.IsFlag(EFFECT_FLAG_FIELD_ONLY) {
+			// TODO: Card.current.controler
+			// if Handler-> current.controler == Player_none
+
+			if !e.InRangeFromCard(pHandler) {
+				return false
+			}
+			if !(pHandler.GetStatus(common.STATUS_EFFECT_ENABLED) > 0) &&
+				!e.IsFlag(EFFECT_FLAG_IMMEDIATELY_APPLY) {
+				return false
+			}
+			// TODO: Card.current.location
+			// if handler.current.location & LOCATION_ONFIELD
+
+			if e.IsFlag(EFFECT_FLAG_OWNER_RELATE) &&
+				e.IsCanBeForbidden() &&
+				pOwner.IsStatus(common.STATUS_FORBIDDEN) > 0 {
+				return false
+			}
+			if pOwner == pHandler &&
+				e.IsCanBeForbidden() &&
+				pHandler.GetStatus(common.STATUS_FORBIDDEN) > 0 {
+				return false
+			}
+			if e.IsFlag(EFFECT_FLAG_OWNER_RELATE) &&
+				!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+				pOwner.IsStatus(common.STATUS_DISABLED) > 0 {
+				return false
+			}
+			if pOwner == pHandler &&
+				!e.IsFlag(EFFECT_FLAG_CANNOT_DISABLE) &&
+				pHandler.GetStatus(common.STATUS_DISABLED) > 0 {
+				return false
+			}
+			if pHandler.IsStatus(common.STATUS_BATTLE_DESTROYED) > 0 {
+				return false
+			}
+		}
+	}
+	if e.Condition == 0 {
+		return true
+	}
+
 	// TODO: Duel.Lua.AddParam()
 	// TODO: Duel.Gameinterfaces.Infos.FieldID++, Field, FieldInfo
-	// }
-	return common.TRUE
+	return true
 }
 
 // check if a effect is EFFECT_TYPE_SINGLE and is ready
 // check: range, enabled, condition
-func (e *Effect) IsSingleReady() int32 {
+// TODO: use bool, check
+func (e *Effect) IsSingleReady() bool {
 	if e.Type&EFFECT_TYPE_ACTIONS > 0 {
-		return common.FALSE
+		return false
 	}
-	// if (e.Type&(EFFECT_TYPE_SINGLE|EFFECT_TYPE_XMATERIAL) > 0) &&
-	// 	!(e.Type&EFFECT_TYPE_FIELD > 0) {
-	// 	pHandler := e.GetHandler()
-	// 	pOwner := e.GetOwner()
-	// TODO: Card.current.controler
-	// TODO: Effect.InRage()
-	// TODO: Card.GetStatus()
-	// TODO: Card.current.location
-	// TODO: Card.IsPosition()
-	// TODO: Duel.Lua.AddParam()
-	// TODO: Duel.Lua.CheckCondition()
-	// }
-	return common.TRUE
+	if (e.Type&(EFFECT_TYPE_SINGLE|EFFECT_TYPE_XMATERIAL) > 0) &&
+		!(e.Type&EFFECT_TYPE_FIELD > 0) {
+		return false
+		// 	pHandler := e.GetHandler()
+		// 	pOwner := e.GetOwner()
+		// TODO: Card.current.controler
+		// TODO: Effect.InRage()
+		// TODO: Card.GetStatus()
+		// TODO: Card.current.location
+		// TODO: Card.IsPosition()
+		// TODO: Duel.Lua.AddParam()
+		// TODO: Duel.Lua.CheckCondition()
+	}
+	return true
 }
 
 // reset_count: count of effect reset
 // count_limit: left count of activation
 // count_limit_max: max count of activation
-func (e *Effect) CheckCountLimit(playerId uint8) int32 {
+// TODO: change into bool, check if correct
+// TODO: rename the function to isxxxx
+func (e *Effect) CheckCountLimit(playerId uint8) bool {
 	if e.IsFlag(EFFECT_FLAG_COUNT_LIMIT) {
 		if e.CountLimit == 0 {
-			return common.FALSE
+			return false
 		}
 		if e.CountCode > 0 {
 			code := e.CountCode & 0xfffffff // reduce the first 4 bit
@@ -163,11 +274,11 @@ func (e *Effect) CheckCountLimit(playerId uint8) int32 {
 			if code == 1 {
 				// TODO: Duel.Gameinterfaces.GetEffectCode()
 				// TODO: Card.FieldID
-				return common.FALSE
+				return false
 			}
 		}
 	}
-	return common.TRUE
+	return true
 }
 
 // check if an EFFECT_TYPE_ACTIONS effect can be activated
@@ -183,7 +294,7 @@ func (e *Effect) IsActivatable(
 	if !(e.Type&EFFECT_TYPE_ACTIONS > 0) {
 		return common.FALSE
 	}
-	if e.CheckCountLimit(playerId) == common.FALSE {
+	if !e.CheckCountLimit(playerId) {
 		return common.FALSE
 	}
 	if e.IsFlag(EFFECT_FLAG_FIELD_ONLY) {
@@ -217,8 +328,29 @@ func (e *Effect) GetHandler() interfaces.Card {
 	}
 	return e.Handler
 }
-func (ef *Effect) IsActivateable(playerid uint8, e interfaces.TEvent, neglectCond int32, neglectCost int32, neglectTarget int32, neglectLoc int32, neglectFaceup int32) int32 {
-	panic("not implemented") // TODO: Implement
+
+// check if an EFFECT_TYPE_ACTIONS effect can be activated
+// for triggering effects, it checks EFFECT_FLAG_DAMAGE_STEP, EFFECT_FLAG_SET_AVAILABLE
+// TODO: changed into bool, check if correct
+func (ef *Effect) IsActivateable(
+	playerid uint8,
+	e interfaces.TEvent,
+	neglectCond int32,
+	neglectCost int32,
+	neglectTarget int32,
+	neglectLoc int32,
+	neglectFaceup int32,
+) bool {
+	if ef.Type&EFFECT_TYPE_ACTIONS == 0 {
+		return false
+	}
+	if !ef.CheckCountLimit(playerid) {
+		return false
+	}
+	if !ef.IsFlag(EFFECT_FLAG_FIELD_ONLY) {
+		return false //TODO:
+	}
+	return true // TODO:
 }
 
 func (ef *Effect) IsActionCheck(playerid uint8) int32 {
@@ -329,11 +461,11 @@ func (ef *Effect) GetHandlerPlayer() uint8 {
 	panic("not implemented") // TODO: Implement
 }
 
-func (ef *Effect) InRangeFromCard(pcard interfaces.Card) int32 {
+func (ef *Effect) InRangeFromCard(pcard interfaces.Card) bool {
 	panic("not implemented") // TODO: Implement
 }
 
-func (ef *Effect) InRangeFromChain(ch interfaces.Chain) int32 {
+func (ef *Effect) InRangeFromChain(ch interfaces.Chain) bool {
 	panic("not implemented") // TODO: Implement
 }
 

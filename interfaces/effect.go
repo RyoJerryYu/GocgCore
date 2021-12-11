@@ -1,13 +1,13 @@
 package interfaces
 
 type Effect interface {
-	IsDisableRelated() int32
-	IsSelfDestroyRelated() int32
-	IsCanBeForbidden() int32
-	IsAvailable() int32
-	IsSingleReady() int32
-	CheckCountLimit(playerid uint8) int32
-	IsActivateable(playerid uint8, e TEvent, neglectCond int32, neglectCost int32, neglectTarget int32, neglectLoc int32, neglectFaceup int32) int32
+	IsDisableRelated() bool
+	IsSelfDestroyRelated() bool
+	IsCanBeForbidden() bool
+	IsAvailable() bool
+	IsSingleReady() bool
+	CheckCountLimit(playerid uint8) bool
+	IsActivateable(playerid uint8, e TEvent, neglectCond int32, neglectCost int32, neglectTarget int32, neglectLoc int32, neglectFaceup int32) bool
 	IsActionCheck(playerid uint8) int32
 	IsActivateReadyWithEffect(reasonEffect Effect, playerid uint8, e TEvent, neglectCond int32, neglectCost int32, neglectTarget int32) int32
 	IsActivateReady(playerid uint8, e TEvent, neglectCond int32, neglectCost int32, neglectTarget int32) int32
@@ -37,8 +37,8 @@ type Effect interface {
 	GetOwnerPlayer() uint8
 	GetHandler() Card
 	GetHandlerPlayer() uint8
-	InRangeFromCard(pcard Card) int32
-	InRangeFromChain(ch Chain) int32
+	InRangeFromCard(pcard Card) bool
+	InRangeFromChain(ch Chain) bool
 	SetActivateLocation()
 	SetActiveType()
 	GetActiveType() uint32
